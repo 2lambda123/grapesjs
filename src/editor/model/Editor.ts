@@ -395,11 +395,7 @@ export default class EditorModel extends Model {
     return Mod;
   }
 
-  private loadStorableModule(InitModule: new (em: EditorModel) => IModule & IStorableModule) {
-    const Mod = this.loadModule(InitModule) as IModule & IStorableModule;
-    this.storables.push(Mod);
-    return Mod;
-  }
+
 
   /**
    * Initialize editor model and set editor instance
