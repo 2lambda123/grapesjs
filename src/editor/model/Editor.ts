@@ -387,7 +387,7 @@ export default class EditorModel extends Model {
   /**
    * Load generic module
    */
-  private loadModule(InitModule: new (em: EditorModel) => IModule) {
+  /* Removed loadModule method */
     const Mod = new InitModule(this);
     this.set(Mod.name, Mod);
     Mod.onLoad && this.toLoad.push(Mod as ILoadableModule);
