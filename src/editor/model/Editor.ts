@@ -353,8 +353,8 @@ export default class EditorModel extends Model {
     }
 
     // Create shallow editor.
-    // Here we can create components/styles without altering/triggering the main EditorModel
-    const shallow = new EditorModel({
+    // Removed shallow editor creation
+    // Removed shallow editor creation({
       noticeOnUnload: false,
       storageManager: false,
       undoManager: false,
