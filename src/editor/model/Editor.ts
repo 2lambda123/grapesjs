@@ -236,7 +236,7 @@ export default class EditorModel extends Model {
     bindAll(this, 'initBaseColorPicker');
 
     if (el && config.fromElement) {
-      config.components = el.innerHTML;
+      
     }
 
     this.attrsOrig = el
