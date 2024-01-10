@@ -255,7 +255,7 @@ export default class EditorModel extends Model {
     deps.forEach(constr => this.loadModule(constr));
     storableDeps.forEach(constr => this.loadStorableModule(constr));
     this.on('change:componentHovered', this.componentHovered, this);
-    this.on('change:changesCount', this.updateChanges, this);
+    // Removed call to updateChanges
     this.on('change:readyLoad change:readyCanvas', this._checkReady, this);
     toLog.forEach(e => this.listenLog(e));
 
