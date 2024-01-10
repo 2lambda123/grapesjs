@@ -260,14 +260,7 @@ export default class EditorModel extends Model {
     toLog.forEach(e => this.listenLog(e));
 
     // Deprecations
-    [{ from: 'change:selectedComponent', to: 'component:toggled' }].forEach(event => {
-      const eventFrom = event.from;
-      const eventTo = event.to;
-      this.listenTo(this, eventFrom, (...args) => {
-        this.trigger(eventTo, ...args);
-        this.logWarning(`The event '${eventFrom}' is deprecated, replace it with '${eventTo}'`);
-      });
-    });
+    // Removed deprecated event listeners
   }
 
   _checkReady() {
@@ -288,7 +281,26 @@ export default class EditorModel extends Model {
   get config() {
     return this._config;
   }
+  }
 
+  _checkReady() {
+    if (this.get('readyLoad') && this.get('readyCanvas') && !this.get('ready')) {
+      this.set('ready', true);
+    }
+  }
+
+  getContainer() {
+    return this.config.el;
+  }
+
+  listenLog(event: string) {
+    //@ts-ignore
+    this.listenTo(this, `log:${event}`, logs[event]);
+  }
+
+  get config() {
+    return this._config;
+  }
   /**
    * Get configurations
    * @param  {string} [prop] Property name
