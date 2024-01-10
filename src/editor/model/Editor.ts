@@ -225,7 +225,7 @@ export default class EditorModel extends Model {
     super();
     this._config = conf;
     const { config } = this;
-    this.set('Config', conf);
+    
     this.set('modules', []);
     this.set('toLoad', []);
     this.set('storables', []);
