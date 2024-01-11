@@ -225,7 +225,7 @@ export default class EditorModel extends Model {
     super();
     this._config = conf;
     const { config } = this;
-    this.set('Config', conf);
+    
     this.set('modules', []);
     this.set('toLoad', []);
     this.set('storables', []);
@@ -236,7 +236,7 @@ export default class EditorModel extends Model {
     bindAll(this, 'initBaseColorPicker');
 
     if (el && config.fromElement) {
-      config.components = el.innerHTML;
+      
     }
 
     this.attrsOrig = el
@@ -255,19 +255,12 @@ export default class EditorModel extends Model {
     deps.forEach(constr => this.loadModule(constr));
     storableDeps.forEach(constr => this.loadStorableModule(constr));
     this.on('change:componentHovered', this.componentHovered, this);
-    this.on('change:changesCount', this.updateChanges, this);
+    // Removed call to updateChanges
     this.on('change:readyLoad change:readyCanvas', this._checkReady, this);
     toLog.forEach(e => this.listenLog(e));
 
     // Deprecations
-    [{ from: 'change:selectedComponent', to: 'component:toggled' }].forEach(event => {
-      const eventFrom = event.from;
-      const eventTo = event.to;
-      this.listenTo(this, eventFrom, (...args) => {
-        this.trigger(eventTo, ...args);
-        this.logWarning(`The event '${eventFrom}' is deprecated, replace it with '${eventTo}'`);
-      });
-    });
+    // Removed deprecated event listeners
   }
 
   _checkReady() {
@@ -288,7 +281,26 @@ export default class EditorModel extends Model {
   get config() {
     return this._config;
   }
+  }
 
+  _checkReady() {
+    if (this.get('readyLoad') && this.get('readyCanvas') && !this.get('ready')) {
+      this.set('ready', true);
+    }
+  }
+
+  getContainer() {
+    return this.config.el;
+  }
+
+  listenLog(event: string) {
+    //@ts-ignore
+    this.listenTo(this, `log:${event}`, logs[event]);
+  }
+
+  get config() {
+    return this._config;
+  }
   /**
    * Get configurations
    * @param  {string} [prop] Property name
@@ -341,8 +353,8 @@ export default class EditorModel extends Model {
     }
 
     // Create shallow editor.
-    // Here we can create components/styles without altering/triggering the main EditorModel
-    const shallow = new EditorModel({
+    // Removed shallow editor creation
+    // Removed shallow editor creation({
       noticeOnUnload: false,
       storageManager: false,
       undoManager: false,
@@ -375,7 +387,7 @@ export default class EditorModel extends Model {
   /**
    * Load generic module
    */
-  private loadModule(InitModule: new (em: EditorModel) => IModule) {
+  /* Removed loadModule method */
     const Mod = new InitModule(this);
     this.set(Mod.name, Mod);
     Mod.onLoad && this.toLoad.push(Mod as ILoadableModule);
@@ -383,11 +395,7 @@ export default class EditorModel extends Model {
     return Mod;
   }
 
-  private loadStorableModule(InitModule: new (em: EditorModel) => IModule & IStorableModule) {
-    const Mod = this.loadModule(InitModule) as IModule & IStorableModule;
-    this.storables.push(Mod);
-    return Mod;
-  }
+
 
   /**
    * Initialize editor model and set editor instance
@@ -395,7 +403,7 @@ export default class EditorModel extends Model {
    * @return {this}
    * @public
    */
-  init(editor: Editor, opts = {}) {
+    init(editor: Editor, opts = {}) {
     if (this.destroyed) {
       this.initialize(opts);
       this.destroyed = false;
