@@ -403,7 +403,7 @@ export default class EditorModel extends Model {
    * @return {this}
    * @public
    */
-  init(editor: Editor, opts = {}) {
+    init(editor: Editor, opts = {}) {
     if (this.destroyed) {
       this.initialize(opts);
       this.destroyed = false;
